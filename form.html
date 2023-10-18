@@ -74,6 +74,16 @@
 
                 li.appendChild(document.createTextNode(`${data[i].name} : ${data[i].email}`));
 
+
+                const editIcon = document.createElement('input');
+                editIcon.type= 'button'
+                editIcon.value = 'edit';
+                editIcon.addEventListener('click', () => {
+                    populateFormForEditing(item)
+                });
+
+                li.appendChild(editIcon);
+
                 const del = document.createElement('input');
                 del.type = 'button';
                 del.value = 'delete';
@@ -97,6 +107,44 @@
                     console.log(err);
                 })
         })
+
+
+        window.addEventListener('DOMContentLoaded', () => {
+            axios.get('https://crudcrud.com/api/098d1e87819a49ee87816b2017b76d40/appointmentData')
+                .then((res) => {
+                    console.log(res);
+                    const data = res.data;
+
+                    for (let i = 0; i < data.length; i++) {
+                        const item = data[i];
+                        const li = document.createElement('li');
+                        li.id = item._id;
+
+                        li.appendChild(document.createTextNode(`${item.name} : ${item.email}`));
+
+                        // Edit icon
+                        const editIcon = document.createElement('input');
+                        editIcon.type = 'button';
+                        editIcon.value = 'edit';
+                        editIcon.addEventListener('click', () => {
+                            populateFormForEditing(item);
+                        });
+
+                        li.appendChild(editIcon);
+                        return li;
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        });
+
+        function populateFormForEditing(item) {
+            name.value = item.name;
+            email.value = item.email;
+        }
+
+
 
         // btn.addEventListener('mouseover' , (e) =>{
         //     e.preventDefault();
