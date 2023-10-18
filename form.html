@@ -68,7 +68,10 @@
                     const data = res.data;
 
             for (let i = 0; i < data.length; i++) {
+                const item = data[i];
                 const li = document.createElement('li');
+                li.id = item._id;
+
                 li.appendChild(document.createTextNode(`${data[i].name} : ${data[i].email}`));
 
                 const del = document.createElement('input');
@@ -76,7 +79,14 @@
                 del.value = 'delete';
 
                 del.addEventListener('click', () => {
-                    
+                    axios.delete(`https://crudcrud.com/api/098d1e87819a49ee87816b2017b76d40/appointmentData/${item._id}`)
+                        .then((response) => {
+                            console.log(response);
+                            li.remove();
+                        })
+                        .catch((error) => {
+                            console.error(error);
+                        });
                 });
 
                 li.appendChild(del);
