@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form>
+        <input type="text" name="name" id="name">
+        <input type="email" name="email" id="email">
+        <button class="btn">Submit</button>
+    </form>
+
+    <ul id="users"></ul>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const btn = document.querySelector('.btn');
+        let name = document.querySelector('#name');
+        let email = document.querySelector('#email');
+        let userList = document.querySelector('#users')
+        
+        
+        btn.addEventListener('click' , (e) =>{
+            e.preventDefault();
+            if(name.value == '' || email.value == ''){
+                alert("Enter name and email");
+            }else{
+                const li = document.createElement('li')
+                li.appendChild(document.createTextNode(
+                    `${name.value} : ${email.value}`
+                ))
+
+                const del = document.createElement('input')                
+                del.type = 'button'
+                del.value = 'delete'
+
+                del.addEventListener('click',()=>{
+                    userList.remove(li);
+                })
+
+                li.appendChild(del)
+
+                userList.appendChild(li);
+                // localStorage.setItem('name',name.value)
+                // localStorage.setItem('email',email.value)
+                const obj = {
+                    name: name.value,
+                    email: email.value
+                }
+
+                axios.post('https://crudcrud.com/api/098d1e87819a49ee87816b2017b76d40/appointmentData',obj).then((res)=>{
+                    console.log(res)
+                }).catch((err)=>{
+                    console.log(err)
+                })
+                name.value = '';
+                email.value=''
+            }
+        })
+        // btn.addEventListener('mouseover' , (e) =>{
+        //     e.preventDefault();
+        //     if(name.value == '' || email.value == ''){
+        //         alert("Enter name and email");
+        //     }else{
+        //         const li = document.createElement('li')
+        //         li.appendChild(document.createTextNode(
+        //             `${name.value} : ${email.value}`
+        //         ))
+        //         userList.appendChild(li);
+        //         localStorage.setItem('name',name.value)
+        //         localStorage.setItem('email',email.value)
+        //         name.value = '';
+        //         email.value=''
+        //     }
+        // })
+        // btn.addEventListener('mouseout' , (e) =>{
+        //     e.preventDefault();
+        //     if(name.value == '' || email.value == ''){
+        //         alert("Enter name and email");
+        //     }else{
+        //         const li = document.createElement('li')
+        //         li.appendChild(document.createTextNode(
+        //             `${name.value} : ${email.value}`
+        //         ))
+        //         userList.appendChild(li);
+        //         name.value = '';
+        //         email.value=''
+        //     }
+        // })
+    </script>
+</body>
+</html>
